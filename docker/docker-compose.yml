@@ -1,13 +1,35 @@
 services:
-  traini8db:
+  trainingcenterdb:
     container_name: trainingcenterdb
     ports:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: trainingcenterdb
     extends:
-      file: base-config.yml
       service: db-config
+      file: base-config.yml
+  
+  trainingcenter:
+    image: "afshan2001/trainingcenter:latest"
+    container_name: trainingcenter
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8080/actuator/health/readiness | grep UP || (echo \"Bash failed to start trainingcenter server\" && exit 1)"
+      interval: 25s
+      timeout: 5s
+      retries: 5
+      start_period: 30s  
+    depends_on:
+      trainingcenterdb:
+        condition: service_healthy
+    extends:
+      service: network-config
+      file: base-config.yml
+    environment:
+      - SPRING_APPLICATION_NAME=trainingcenter
+      - SPRING_DATASOURCE_URL=jdbc:mysql://trainingcenterdb:3306/trainingcenterdb
+
 networks:
   trainingcenter-network:
     driver: bridge

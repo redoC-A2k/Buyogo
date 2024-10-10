@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.redoC_A2k.trainingcenter.dto.TrainingCenterDto;
+import com.redoC_A2k.trainingcenter.entity.Address;
 import com.redoC_A2k.trainingcenter.entity.TrainingCenter;
 import com.redoC_A2k.trainingcenter.exception.TrainingCenterExistsException;
 import com.redoC_A2k.trainingcenter.mapper.TraininigCenterMapper;
@@ -23,6 +24,24 @@ public class TrainingCenterServiceImpl implements iTrainingCenterService{
     @Override
     public List<TrainingCenterDto> getAllTrainingCenters() {
         List<TrainingCenter> trainiangCenters = trainingCenterRepository.findAll();
+        List<TrainingCenterDto> trainingCenterDtos = new ArrayList<>();
+        for (TrainingCenter trainiangCenter : trainiangCenters) {
+            TrainingCenterDto trainingCenterDto = new TrainingCenterDto();
+            trainingCenterDto = TraininigCenterMapper.toDto(trainingCenterDto, trainiangCenter);
+            trainingCenterDtos.add(trainingCenterDto);
+        }
+        return trainingCenterDtos;
+    }
+
+    @Override
+    public List<TrainingCenterDto> getAllTrainingCenters(String city,String state) {
+        List<TrainingCenter> trainiangCenters = new ArrayList<>();
+        if(state != null && city != null) 
+            trainiangCenters = trainingCenterRepository.findByCenterAddressCityAndCenterAddressState(city, state);
+        else if(state != null)
+            trainiangCenters = trainingCenterRepository.findByCenterAddressState(state);
+        else if(city != null)
+            trainiangCenters = trainingCenterRepository.findByCenterAddressCity(city);
         List<TrainingCenterDto> trainingCenterDtos = new ArrayList<>();
         for (TrainingCenter trainiangCenter : trainiangCenters) {
             TrainingCenterDto trainingCenterDto = new TrainingCenterDto();

@@ -1,11 +1,13 @@
 package com.redoC_A2k.trainingcenter.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redoC_A2k.trainingcenter.dto.ErrorResponseDto;
 import com.redoC_A2k.trainingcenter.dto.ResponseDto;
 import com.redoC_A2k.trainingcenter.dto.TrainingCenterDto;
+import com.redoC_A2k.trainingcenter.entity.Address;
 import com.redoC_A2k.trainingcenter.service.iTrainingCenterService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -58,7 +61,13 @@ public class TrainingCenterController {
         @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @GetMapping("/get-all")
-    public ResponseEntity<List<TrainingCenterDto>> getAllTrainingCenters() {
-        return ResponseEntity.status(HttpStatus.OK).body(trainingCenterService.getAllTrainingCenters());
+    public ResponseEntity<List<TrainingCenterDto>> getAllTrainingCenters(@RequestParam(required = false) String state, @RequestParam(required = false) String city) {
+        if(state == null && city == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(trainingCenterService.getAllTrainingCenters());
+        } else {
+            // return ResponseEntity.status(HttpStatus.OK).body(new ArrayList<>());
+            return ResponseEntity.status(HttpStatus.OK).body(trainingCenterService.getAllTrainingCenters(city,state));
+        }
     }
+
 }

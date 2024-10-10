@@ -10,11 +10,11 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(info = @Info(
 	title = "Buyogo assignment API Documentation", 
+	version = "1.0",
 	description = "This is swagger documentation for Buyogo assignment",
 	contact = @Contact(
 		name = "Afshan Ahmed Khan",
-		email = "afshanahmeda2k@gmail.com",
-		url = "https://www.eazybank.com"
+		email = "afshanahmeda2k@gmail.com"
 	))
 )
 @EnableJpaAuditing

@@ -26,12 +26,10 @@ import lombok.Setter;
 @Entity
 public class TrainingCenter extends BaseEntity{
     
-    @Id
-    private String centerId;
-
     @Column(nullable = false,length = 40)
     private String centerName;
 
+    @Id
     @Column(nullable = false,length = 12)
     private String centerCode;
 

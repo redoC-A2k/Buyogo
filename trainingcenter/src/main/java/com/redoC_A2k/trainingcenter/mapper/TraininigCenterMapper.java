@@ -28,7 +28,7 @@ public class TraininigCenterMapper {
         trainingCenter.setCoursesOffered(trainingCenterDto.getCoursesOffered());
         trainingCenter.setContactEmail(trainingCenterDto.getContactEmail());
         trainingCenter.setContactPhone(trainingCenterDto.getContactPhone());
-        trainingCenter.setCenterId(UUID.randomUUID().toString());
+        // trainingCenter.setCenterId(UUID.randomUUID().toString());
         return trainingCenter;
     }
     

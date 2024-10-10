@@ -1,0 +1,10 @@
+Create Table if not exists trainingcenter (
+    center_id bigint primary key,
+    center_name varchar(40) not null,
+    center_code varchar(12) not null,
+    
+);
+
+//TODO: 
+1. Validations
+2. 

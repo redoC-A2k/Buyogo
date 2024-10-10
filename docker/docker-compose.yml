@@ -1,0 +1,13 @@
+services:
+  traini8db:
+    container_name: trainingcenterdb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: trainingcenterdb
+    extends:
+      file: base-config.yml
+      service: db-config
+networks:
+  trainingcenter-network:
+    driver: bridge

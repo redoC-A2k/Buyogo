@@ -1,0 +1,17 @@
+services:
+  network-config:
+    networks:
+      - trainingcenter-network
+
+  db-config:
+    image: mysql:8.0.30
+    extends:
+      service: network-config
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: root

@@ -1,0 +1,20 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: trainingcenter
+    
+    datasource:
+        url: jdbc:mysql://localhost:3306/trainingcenterdb
+        username: root
+        password: root
+
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+    
+    sql:
+        init:
+            mode: always

@@ -1,9 +1,16 @@
 package com.redoC_A2k.trainingcenter.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
@@ -16,12 +23,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass
 @Entity
-public class Center extends BaseEntity{
+public class TrainingCenter extends BaseEntity{
     
     @Id
-    private Long centerId;
+    private String centerId;
 
     @Column(nullable = false,length = 40)
     private String centerName;
@@ -29,13 +35,14 @@ public class Center extends BaseEntity{
     @Column(nullable = false,length = 12)
     private String centerCode;
 
-    @Embedded
+    @Embedded // I could have used one to many mapping here as a training center can have multiple addresses , but since in assignment it was mentioned just Object not List<Object> so I used embedded
     private Address centerAddress;
 
     private int studentCapacity;
 
-    @ManyToOne
-    private String coursesOffered;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "courses_offered",joinColumns = @JoinColumn(name = "center_id"))
+    private List<String> coursesOffered = new ArrayList<>();
 
     @Column(nullable = false)
     private String contactEmail;

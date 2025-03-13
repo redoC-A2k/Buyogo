@@ -7,6 +7,7 @@ import com.redoC_A2k.trainingcenter.dto.ResponseDto;
 import com.redoC_A2k.trainingcenter.dto.TrainingCenterDto;
 import com.redoC_A2k.trainingcenter.service.iTrainingCenterService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class TrainingCenterController {
     private iTrainingCenterService trainingCenterService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> postMethodName(@RequestBody TrainingCenterDto trainingCenterDto) {
+    public ResponseEntity<ResponseDto> postMethodName(@Valid @RequestBody TrainingCenterDto trainingCenterDto) {
         System.out.println("Training Center: " + trainingCenterDto);
         trainingCenterService.saveTrainingCenter(trainingCenterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "Training Center Created Successfully"));

@@ -3,9 +3,16 @@ package com.redoC_A2k.trainingcenter.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redoC_A2k.trainingcenter.dto.ErrorResponseDto;
 import com.redoC_A2k.trainingcenter.dto.ResponseDto;
 import com.redoC_A2k.trainingcenter.dto.TrainingCenterDto;
 import com.redoC_A2k.trainingcenter.service.iTrainingCenterService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -25,7 +32,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 @AllArgsConstructor
 public class TrainingCenterController {
     private iTrainingCenterService trainingCenterService;
-
+    
+    @Operation(
+        summary = "Create training center api",
+        description = "This api is used to create a new training center"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Training center created successfully"),
+        @ApiResponse(responseCode = "400", description = "Training center already exists / Fields are not valid"),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> postMethodName(@Valid @RequestBody TrainingCenterDto trainingCenterDto) {
         System.out.println("Training Center: " + trainingCenterDto);
@@ -33,6 +49,14 @@ public class TrainingCenterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "Training Center Created Successfully"));
     }
     
+    @Operation(
+        summary = "Get all training centers api",
+        description = "This api is used to get all training centers"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @GetMapping("/get-all")
     public ResponseEntity<List<TrainingCenterDto>> getAllTrainingCenters() {
         return ResponseEntity.status(HttpStatus.OK).body(trainingCenterService.getAllTrainingCenters());

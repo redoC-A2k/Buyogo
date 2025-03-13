@@ -2,11 +2,13 @@ package com.redoC_A2k.trainingcenter.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.redoC_A2k.trainingcenter.dto.TrainingCenterDto;
 import com.redoC_A2k.trainingcenter.entity.TrainingCenter;
+import com.redoC_A2k.trainingcenter.exception.TrainingCenterExistsException;
 import com.redoC_A2k.trainingcenter.mapper.TraininigCenterMapper;
 import com.redoC_A2k.trainingcenter.repository.TrainingCenterRepository;
 import com.redoC_A2k.trainingcenter.service.iTrainingCenterService;
@@ -33,6 +35,10 @@ public class TrainingCenterServiceImpl implements iTrainingCenterService{
     @Override
     public TrainingCenter saveTrainingCenter(TrainingCenterDto trainingCenterDto) {
         TrainingCenter newTrainingCenter = new TrainingCenter();
+        Optional<TrainingCenter> trainingCenter = trainingCenterRepository.findById(trainingCenterDto.getCenterCode());
+        if(trainingCenter.isPresent()) {
+            throw new TrainingCenterExistsException("Training center already exists with code: " + trainingCenterDto.getCenterCode());
+        }
         newTrainingCenter = TraininigCenterMapper.toEntity(newTrainingCenter, trainingCenterDto);
         trainingCenterRepository.save(newTrainingCenter);
         return newTrainingCenter;

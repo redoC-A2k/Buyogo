@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 @AllArgsConstructor
 public class TrainingCenterController {
     private iTrainingCenterService trainingCenterService;
@@ -61,7 +64,7 @@ public class TrainingCenterController {
         @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @GetMapping("/get-all")
-    public ResponseEntity<List<TrainingCenterDto>> getAllTrainingCenters(@RequestParam(required = false) String state, @RequestParam(required = false) String city) {
+    public ResponseEntity<List<TrainingCenterDto>> getAllTrainingCenters(@RequestParam(required = false) @Pattern(regexp = "[a-zA-Z -]*", message = "state parameter must consists of alphabets or whitespace") String state, @RequestParam(required = false) @Pattern(regexp = "[a-zA-Z -]*",message = "city parameter must consists of alphabets or whitespace") String city) {
         if(state == null && city == null) {
             return ResponseEntity.status(HttpStatus.OK).body(trainingCenterService.getAllTrainingCenters());
         } else {
